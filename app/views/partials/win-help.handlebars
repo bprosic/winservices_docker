@@ -1,0 +1,92 @@
+
+<p>1. Open command on your host mashine.
+<br />To find out what MAC Address is used for network connection, use:
+<blockquote>
+  <b><small>ipconfig /all</small></b>
+</blockquote>
+<br />and write it somewhere cuz you will need this MAC later.</p>
+
+<p>2. Download a client program and unzip it to host mashine.</p>
+
+<p><a class="client_lnk_download" href="/files/winserv_client.zip"><i class="icon icon-download"></i>windows</a></p>   
+
+<p></p>
+
+<p>3. This program should be run on host mashine - one example is Virtual Mashine where desired Windows services are
+  located.<br />Run this program (WinServiceInfo.exe) as Administrator in order to work.</p>
+
+<img src="/css/img/help/client1.png" alt="Run WinServiceInfo.exe as Administrator" class="img-thumbnail img-responsive">
+<br />
+
+<p>4. This program is an editor actually. Everything that you write in this program is saved in <samp>config.cfg</samp>
+  file (located in program root folder).
+  <br />If <samp>config.cfg</samp> file is missing, this program will create it.</p>
+
+<p>In "List of services" tab section, click on <b>Edit</b> button below. </p>
+
+<img src="/css/img/help/client2.png" alt="WinServiceInfo.exe editor" class="img-thumbnail img-responsive">
+<br />
+
+<p>Here you need to write down a desired windows service to monitor.</p>
+<img src="/css/img/help/client2_1.png" alt="WinServiceInfo.exe editor" class="img-thumbnail img-responsive">
+
+<p>Examples of windows services:</p>
+<ul>
+  <li>WebClient</li>
+  <li>AdobeARMService</li>
+  <li>uvnc_service</li>
+  <li>sshd</li>
+</ul>
+
+<p>To find out how is called Windows service use:</p>
+<blockquote>
+  <b><small>services.msc</small></b>
+</blockquote>
+
+<p>choose a desired service -> right mouse click on it -> settings -> you will see first field <b>"Service name"</b>.
+  <br />This is your service name to write into program.</p>
+
+<img src="/css/img/help/client3.png" alt="WinServiceInfo.exe editor" class="img-thumbnail img-responsive">
+<br />
+
+<p>5. After writing all the services you need, you need to open "Other" tab to write destination server.</p>
+
+<p>Here you can choose between two options for server name: writing IP Address or DNS.</p>
+
+<p><h3>option a) Entering server's IP address</h3></p>
+
+<p>Check checkbox <b>"Instead IP use DNS"</b> to false (leave it empty)</p>
+<p>For destination server IP you have to write IP Address (IPv4 only) where this website is located.</p>
+<p>Here is direct information gathered from this web site network card and this is what you should write:</p>
+
+    {{#each networkData}}
+    <p>{{interface}}:<span class="label label-secondary">{{address}}</span>
+    {{/each}}
+    | Port: <span class="label label-secondary">50123</span></p>
+
+
+
+<p><h3>option b) Entering server DNS <span class="label label-primary">(recommended)</span></h3></p>
+<p>Check checkbox <b>"Instead IP use DNS"</b> to true</p>
+<p>Server: <span class="label label-secondary">zollinfo.th-deg.de</span> Port: <span class="label label-secondary">50123</span></p>
+
+<p>If you want this program to run in background, check <b>"Run this program in background"</b>.</p>
+
+<p>6. Click Save and wait a bit**. You should see your services in table and it's status.</p>
+<p><small>**When you see console popup after pressing button "Save", don't close the console! It will automatically close.</small></p>
+
+<img src="/css/img/help/client5.png" alt="WinServiceInfo.exe editor" class="img-thumbnail img-responsive">
+<br />
+
+<p>8. This is how it should look.</p>
+
+<img src="/css/img/help/client6.png" alt="WinServiceInfo.exe editor" class="img-thumbnail img-responsive">
+<br />
+
+<p>9. Exit a program***.</p>
+
+<p>
+  <small>***If service is not running (presuming you opened this editor as Administrator), then do next:</small>
+  <br /><small>1 step: In "List of services" tab click on Edit -> goto "Other" tab -> disable "Run this program in background" -> click Save button</small>
+  <br /><small>2 step: repeat 1st step one more time</small>
+</p>

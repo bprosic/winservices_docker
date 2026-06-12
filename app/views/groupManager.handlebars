@@ -1,0 +1,167 @@
+<body>
+     <div class="d-flex" id="wrapper">
+         
+     {{>sidebar}}
+
+    <!-- Page Content -->
+        <div id="page-content-wrapper">
+        <!-- breadcrumb -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-12">
+                    <ul class="breadcrumb">
+                        <i class="icon icon-location"></i>
+                        <li class="breadcrumb-item">
+                            <a href="/addhost">Group manager</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <h1></h1>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-12">
+                    <div class="addForm">
+                        <h4>Add host/client to group</h4>
+                        <input class="form-control" id="myInput" type="text" placeholder="Filter..">
+                        <br>
+                    </div>
+                        <div class="listViewContainer">
+                        <div id="userTblContainer">
+                            <table id="tblUsrs" class="table table-bordered table-striped table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-2">Group Name</th>
+                                        <th class="col-md-6">Contact</th>
+                                        <th class="col-md-2" style="text-align: center;">Hosts</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {{#each result}}
+                                    <tr>
+                                        <td class="col-md-2">{{uUsername}}</td>
+                                        <td class="col-md-6">{{uEmail}}</td>
+                                        <td class="col-md-2" style="text-align: center;"><button type="button" name="{{uUsername}}"
+                                                class="btn btn-link ed">add/view</button>
+                                        </td>
+                                        
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                    <p>Groups in database</p>
+                    </div>
+                </div><!-- end of col-xs-12 -->
+            </div><!-- end of col-xs-12 -->
+        </div><!-- end of row -->
+    </div>
+    
+    </div>
+      <!-- /container-fluid -->
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+{{>logout}}
+    <script nonce="{{nonce}}">
+    $('#addhostlnk').css({"background-color":"#f2f2f2"});
+        {{#if errors}}
+            {{#each errors}}
+                {{#each this}}
+                    var divId = "{{param}}";
+                    var divOldValue = "{{value}}"
+                    var divWhatIsMessage = "{{msg}}";
+                    $('#' + divId).val(divOldValue);
+                    $('#' + divId).next().text(divWhatIsMessage);
+                {{/each}}
+            {{/each}}
+        {{/if}}
+
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tblUsrs tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+
+        $('#cancelBtn').on('click', function (e) {
+            e.preventDefault();
+            window.location.href = '/add';
+        });
+
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+        
+        $('.ed, .del').on('click', function(e) {
+        e.preventDefault();
+        var thisBtn = $(this);
+        var idUser = thisBtn.attr('name');
+        var gotolink = "";
+        var ajaxPostGet = "";
+        var dataToSend;
+        if (thisBtn.hasClass('ed')) {
+            gotolink = "/edit/byid/" + idUser; //http://192.168.162.18:50123/edit/byid/2
+            ajaxPostGet = "GET";
+            dataToSend = "";
+        }
+        if (thisBtn.hasClass('del')) {
+            gotolink = "/delete";
+            ajaxPostGet = "POST";
+            dataToSend = { idUser : idUser, _csrf: $("[name='_csrf']").val()};
+        }
+
+        $.ajax({
+            url: gotolink,
+            type: ajaxPostGet,
+            
+            complete: function() {
+                //console.log(this.url);
+            },
+            
+            data: dataToSend,
+            success: function(data) {
+                if (data == "deleted") {
+                    window.location.href = '/add';
+                }
+                else if (data == "error") {
+                    console.log("error deleting user");
+                    $.notify("Error deleting", "error");
+                }  else {
+                    window.location.href = gotolink;
+                }
+                
+            },
+            error: function(jqXhr, textStatus, err) {
+                console.log("Error exec");
+                $.notify("Error occured", "error");
+                
+            }
+        });
+    });
+
+    </script>
+
+    
+
+    <script src="/js/validator.js"></script>

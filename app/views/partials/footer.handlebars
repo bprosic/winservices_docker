@@ -1,0 +1,20 @@
+
+<script nonce="{{nonce}}">
+    var menu = "<a id='menu-toggle-a'href='#'><div id='menu-toggle'>menu</div></a>";
+    $('body').append(menu);
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+        $("#page-content-wrapper").toggleClass("toggled");
+    });
+    $('#helplnk').on('click', function(e) {
+        e.preventDefault();
+        $(this).next('.submenu').toggleClass('toggled');
+    });
+</script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/functions.js"></script>
+<script src="/js/notify.min.js"></script>
+
+</body>
+</html>

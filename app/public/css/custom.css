@@ -1,0 +1,239 @@
+#bigmessagediv {
+    display: block;
+    background-color: brown;
+    color: #fff;
+    height: 70px;
+    width: 100%;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+body {
+    position: relative;
+}
+.breadcrumb {
+    background-color: #fff;
+}
+.column .col-xs-6 span {
+    font-size: 10px;
+}
+
+.bck-head {
+    background-color: #ddd;
+    border-bottom: 1px solid #000;
+}
+#tblUsrs td {
+    vertical-align: middle;
+}
+#userTblContainer {
+    border-style: dashed;
+    border-color: #ddd;
+    border-width: 1px 1px 1px 1px;
+    
+    overflow-y: auto;
+}
+.nav { 
+    flex-direction: row;
+}
+.tab-content {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    margin-top: -5px;
+    padding: 20px;
+    
+}
+
+.tab-pane, .tab-pane:active {
+    display: block;
+    height: 200px;
+}
+.help-block.with-errors {
+    color: red;
+    font-weight: bold;
+}
+#confirmBox
+{
+    position:fixed;
+    padding:0;
+    margin:0;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: #ba004d;
+    background: #ba004d;
+    text-align: center;
+    padding-top: 10%;
+    display: none;
+}
+#confirmBox span {
+    background-color: #932a76;
+    display: inline-block;
+    border-radius: 3px;
+    border: 1px solid #2f4858;
+    padding: 2px;
+    text-align: center;
+    width: 80px;
+    cursor: pointer;
+    color: #fff;
+}
+
+#confirmBox span:hover {
+    background-color: #7779AD;
+}
+
+#confirmBox .message {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.floatAdmin {
+    background-color: #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+.floatAdmin:hover {
+    background-color: #ddd;
+}
+.adminBtnLnk, .adminBtnLnk:visited {
+    display: inline-table;
+    text-decoration: none;
+}
+.adminBtnLnk:hover {
+    color: #000;
+}
+.logoutbtnlnk, .logoutbtnlnk:visited {
+    position: fixed;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+}
+.logoutbtnlnk:hover {
+    text-decoration: none;
+    color: #000;
+}
+.logoutbtn {
+    padding: 10px;
+    background-color: #ccc;
+}
+.logoutbtn:hover {
+    background-color: red;
+}
+#logoutLnkSidebar {
+    display: none;
+}
+.bar {
+    height: 2px;
+    background: green;
+}
+.filesContainer, .filesContainerUploadedFile {
+    margin-top: 5px;
+    border: 1px solid #eee;
+    width: 100%;
+    position: relative;
+}
+.filesLinks, .filesLinksUploadedFile {
+    background-color: lightgreen;
+    padding: 10px 14px 10px 14px;
+    border-radius: 10px;
+}
+#imgPrvwContainer, .img-doesnt-fit-by-spectre {
+    width: 94%;
+    border: 2px lightgreen solid;
+    padding: 5px;
+    height: 200px;
+    
+    
+    object-fit: scale-down;
+
+}
+.img-doesnt-fit-by-spectre-view {
+    float: left;
+    width:  100%;
+    height: 200px;
+    object-fit: scale-down;
+    border-bottom: 1px solid #ddd;
+}
+.working {
+    background-color: #ff0;
+}
+
+.error {
+    background-color: red;
+}
+.filesContainer div.fileName, .filesContainer div.mem, .filesContainer img,
+.filesContainerUploadedFile div.fileNameUploaded, .filesContainerUploadedFile div.mem, .filesContainerUploadedFile img {
+    display: block;
+    margin: 10px;
+}
+.filesContainer a,
+.filesContainerUploadedFile a {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    
+}
+.client_lnk_download, .client_lnk_download:visited {
+    text-decoration: none;
+}
+.client_lnk_download:hover {
+    text-decoration: none;
+    border-bottom: 1px solid olive;
+}
+.acc pre {
+    display: table;
+}
+
+#winhelp, #linhelp {
+    display: none;
+    border: 1px dashed #aaa;
+    padding: 5px 10px;
+}
+#winhelpbtn, #linhelpbtn, #winhelpbtn:visited, #linhelpbtn:visited {
+    text-decoration: none;
+    display: table;
+}
+#winhelpbtn:hover, #linhelpbtn:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: #ccc;
+    
+}
+#winhelpbtn.active, #linhelpbtn.active{
+    color: red;
+}
+.username-lnx {
+    display: inline;
+}
+
+#input-username-linux {
+    width: 400px;
+}
+
+@media (min-width:600px) {
+    .addForm {
+        width: 400px;
+    }
+    .listViewContainer {
+        width: 90%;
+    }
+    
+}
+@media (max-width:400px) {
+    .breadcrumb li {
+        display: block;
+        width: 90%;
+        text-align: left;
+    }
+}

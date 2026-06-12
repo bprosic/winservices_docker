@@ -1,0 +1,142 @@
+select distinct p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p where p.hostsIpAddr = "192.168.162.18" order by p.createdAt desc
+join tblhost as d on p.hostsIpAddr = d.hostIp where d.hostIp in (select cc.hostIp from winservices.tblhost as cc join winservices.tblusers as b on b.uIdUser = cc.uIdUser where b.username = "L010A")
+
+
+
+select p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+where p.hostsIpAddr in ("192.168.162.18", "192.168.56.1") order by p.createdAt desc limit 2
+
+
+select p.hostIp from winservices.tblhost as p where p.uIdUser = 1 // 192.168.161.76, 192.168.161.115, 192.168.162.18
+select u.uIdUser from winservices.tblusers as u where u.uUsername = L010; // 1
+
+select tbl2.hostIp from tblhost as tbl2 join tblusers as tbl1 on tbl1.uIdUser = tbl2.uIdUser where tbl1.uUsername = "test" // 192.168.162.18,...
+
+select p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.162.18', '192.168.162.13', '192.168.56.1') group by p.hostsIpAddr order by p.createdAt DESC
+
+
+--------------------------------------------------------------------------------------------
+
+tblusers
+uUsername   |   uIdUser
+l010        |   1
+test        |   2
+
+tblhost
+hostIp          |   uIdUser
+192.168.10.13   |   1
+192.168.162.18  |   2
+192.168.162.13  |   2
+192.168.56.1    |   2
+
+tblhosts*
+hostsIpAddr     |   createdAt
+192.168.162.18  |   2019-10-28
+192.168.56.1    |   2019-10-28
+
+
+select p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.162.18', '192.168.162.13', '192.168.56.1')
+and createdAt >= CURDATE() and createdAt < CURDATE() + INTERVAL 1 DAY
+group by p.hosts order by p.createdAt DESC
+// NE RADI
+
+
+select p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.162.18', '192.168.162.13', '192.168.56.1')
+and createdAt >= CURDATE() and createdAt < CURDATE() + INTERVAL 1 DAY
+group by p.createdAt order by p.createdAt DESC
+
+
+
+select p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.162.18', '192.168.162.13', '192.168.56.1') group by p.hostsIpAddr order by p.createdAt DESC
+// dobivam rezultat od proslog petka, dva recorda,... NE RADI
+
+zbunjen sam
+
+
+SELECT * FROM tblhosts as a
+WHERE idHosts = (SELECT MAX(idHosts) FROM tblhosts WHERE a.hostsIpAddr = '192.168.56.1')
+and WHERE idHosts = (SELECT MAX(idHosts) FROM tblhosts WHERE a.hostsIpAddr = '192.168.162.13')
+and WHERE idHosts = (SELECT MAX(idHosts) FROM tblhosts WHERE a.hostsIpAddr = '192.168.162.18')
+
+
+
+select h.* from tblhosts as h group by createdAt order by createdAt DESC limit 1
+
+
+SELECT h.*
+FROM tblhosts as h
+WHERE h.idHosts IN (
+    SELECT MAX(idHosts)
+    FROM tblhosts
+    GROUP BY createdAt
+);
+
+
+
+
+
+// DOBIJES SVE RECORDE OD DANAS!!
+select p.idHosts, p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.161.115', '192.168.161.76')
+order by p.createdAt DESC limit 1
+
+
+
+
+select p.idHosts, p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt from winservices.tblhosts as p 
+WHERE p.hostsIpAddr in ('192.168.161.76')
+order by p.createdAt DESC limit 1
+
+
+select * from winservices.tblhosts as p
+where p.hostsIpAddr in (select hostsIpAddr from tblhost where hostsIpAddr = '192.168.161.76' order by idHosts desc limit 1,  select hostsIpAddr from tblhost where hostsIpAddr = '192.168.161.115' order by idHosts desc limit 1)
+group by p.hostsIpAddr
+
+
+
+
+SELECT p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt
+FROM winservices.tblhosts AS p
+INNER JOIN (
+SELECT hostsIpAddr, MAX(idHosts) as id
+FROM winservices.tblhosts
+GROUP BY hostsIpAddr
+)as last_ip
+on p.idHosts = last_ip.idHosts
+WHERE p.hostsIpAddr IN ('192.168.162.18', '192.168.162.13', '192.168.56.1')
+
+SELECT p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt
+FROM winservices.tblhosts AS p
+INNER JOIN (
+SELECT MAX(idhosts) as idhosts
+FROM winservices.tblhosts
+GROUP BY hostsIpAddr
+)as last_ip
+on p.idhosts = last_ip.idhosts
+WHERE p.hostsIpAddr IN ('192.168.162.18', '192.168.162.13', '192.168.56.1')
+
+
+SELECT p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt
+FROM winservices.tblhosts AS p
+INNER JOIN (
+SELECT hostsIpAddr, MAX(createdAt) as createdAt, MAX(idHosts)
+FROM winservices.tblhosts
+GROUP BY hostsIpAddr
+)as last_ip
+on p.hostsIpAddr = last_ip.hostsIpAddr
+AND p.createdAt = last_ip.createdAt
+WHERE p.hostsIpAddr IN ('192.168.162.18', '192.168.162.13', '192.168.56.1')
+
+
+
+select p.jsonReceivedFrom, p.portReceivedFrom, p.idHosts, p.hostsName, p.hostsIpAddr, p.hostsServiceName, p.hostsServiceStatus, p.createdAt, p.isActive from winservices.tblhosts as p WHERE p.hostsIpAddr = "192.168.162.18" order by p.createdAt DESC limit 1
+
+select u.uIdUser, u.uPassword, u.uUsername, u.uEmail, h.idHost, h.hostIp, h.hostName, h.hostDescription 
+from winservices.tblusers as u 
+left join winservices.tblhost as h
+on u.uIdUser = h.uIdUser
+where u.uIdUser = 2

@@ -1,0 +1,30 @@
+<body>
+    <div class="bg-image"></div>
+    <div class="login-form">
+        <form action="/login" method="post">
+            <h2 class="text-center">Join the force</h2>
+            <div id="fieldsContainer">
+                <div class="form-group">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="required" name="username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" required="required"
+                        name="password">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-default">Join</button>
+                </div>
+                <div class="text-right">
+                    <small class="text-muted">NuW IT Support</small>
+                </div>
+            </div>
+        </form>
+    </div>
+    {{> msgs}}
+
+    <script type="application/javascript"  nonce="{{nonce}}">
+        var d = document.getElementById('inputUsername');
+        // document.getElementById("inputUsername").addEventListener('click', doSomething);
+        d.focus();
+    </script>

@@ -1,0 +1,42 @@
+services:
+  app:
+    build: ./app
+    container_name: winservices_docker
+    user: node
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - DOCKER_IN_PRODUCTION=${NODE_ENV}
+      - RUNNING_IN_DOCKER=true
+    volumes:
+       - "${EXTERNAL_UPLOADS_DIRECTORY}:${INTERNAL_UPLOADS}" # host path : container path (DONT USE ./, just relative paths)
+       - "${EXTERNAL_LOG_DIR}:${INTERNAL_LOG_DIR}"
+    depends_on:
+      - mysql
+    networks:
+      - winservices_net
+    # user: "node:node"
+  mysql:
+    image: mysql:8.0
+    container_name: test_mysql
+    restart: always
+    ports:
+      - "3307:3306" # docker always listens mysql on 3306, but I want that my host machine is listening on 3307
+    networks:
+      - winservices_net
+    environment:
+      MYSQL_ROOT_PASSWORD: ${INIT_DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  winservices_net:
+volumes:
+  mysql_data:

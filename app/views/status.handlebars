@@ -1,0 +1,90 @@
+<body>
+     <div class="d-flex" id="wrapper">
+         
+     {{>sidebar}}
+
+    <!-- Page Content -->
+        <div id="page-content-wrapper">
+        <!-- breadcrumb -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-12">
+                    <ul class="breadcrumb">
+                        <i class="icon icon-location"></i>
+                        <li class="breadcrumb-item">
+                            <a href="/status">Status</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h1></h1>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-12">
+                    <div class="listViewContainer">
+                        <div class="addForm">
+                        <h4>View services status</h4>
+                        <input class="form-control" id="myInput" type="text" placeholder="Filter..">
+                        </div>
+                        <br>
+                        <div id="userTblContainer">
+                            <table id="tblUsrs" class="table table-bordered table-striped table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-2">Groupname</th>
+                                        <th class="col-md-6">Email</th>
+                                        <th class="col-md-2">Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {{#each result}}
+                                    <tr>
+                                        <td class="col-md-2">{{uUsername}}</td>
+                                        <td class="col-md-6">{{uEmail}}</td>
+                                        <td class="col-md-2"><button type="button" name="{{uUsername}}"
+                                                class="btn btn-link vw">view</button>
+                                        </td>
+                                        
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                    <p>Current users stored in database.</p>
+                    </div>
+                </div><!-- end of col-xs-9 -->
+            </div><!-- end of col-xs-9 -->
+        </div><!-- end of row -->
+    </div>
+    
+    </div>
+      <!-- /container-fluid -->
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+{{>logout}}
+
+    <script type="application/javascript" nonce="{{nonce}}">
+    $('#statuslnk').css({"background-color":"#f2f2f2"});
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#tblUsrs tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    $('.vw').on('click', function(e) {
+        e.preventDefault();
+        var thisBtn = $(this);
+        var idUser = thisBtn.attr('name');
+        window.location.href = "/view/" + idUser; //http://192.168.162.18:50123/edit/byid/2
+        
+    });
+
+    </script>
+
+    

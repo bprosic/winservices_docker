@@ -1,0 +1,78 @@
+<body>
+    <div class="d-flex" id="wrapper">
+
+        {{>sidebar}}
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+                        <ul class="breadcrumb">
+                            <i class="icon icon-location"></i>
+                            <li class="breadcrumb-item">
+                                <a href="#">Help</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/help/client">Client</a>
+                            </li>
+                        </ul>
+                    </div><!-- end of col-xs-12 -->
+                </div><!-- end of col-xs-12 -->
+            </div><!-- end of row -->
+
+            <h1></h1>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+                        <h4>How to install reporting tool on host mashine on:</h4>
+                        <div class="acc">
+                            <h4 id="winhelpbtn">: windows</h4>
+                            <div id="winhelp">{{>win-help}}</div>
+                        </div>
+                        <div class="acc">
+                            <h4 id="linhelpbtn">: linux</h4>
+                            <div id="linhelp">{{>linux-help}}</div>
+                        </div>
+                    </div><!-- end of col-xs-9 -->
+                </div><!-- end of col-xs-12 -->
+            </div><!-- end of row -->
+
+        </div><!-- page-content-wrapper -->
+    </div><!-- d-flex, wrapper -->
+
+
+
+    {{>logout}}
+    <script type="application/javascript" nonce="{{nonce}}">
+        $('#helplnk').next('.submenu').toggleClass('toggled');
+        $('#clientlnk').css({ "background-color": "#f2f2f2" });
+
+        //$('#winhelpbtn, #linhelpbtn').on("click", function(e){
+        $('.acc > h4').on("click", function (e) {
+            var dd = $(this);
+            if (dd.hasClass("active")) {
+                dd.removeClass("active");
+                dd.next("div").slideUp(200)
+            }
+            else {
+                $('.acc > h4').removeClass("active");
+                $('.acc > div').slideUp(200);
+
+                dd.addClass("active");
+                dd.next("div").slideDown(200);
+                window.scrollTo(0, 0);
+            }
+        });
+
+        $('#input-username-linux').val("");
+
+        $('#input-username-linux').on('input', function (x) {
+            var dd2 = $(this).val();
+            if (dd2.length > 0) {
+                $('.username-lnx').text(dd2);
+            } else {
+                $('.username-lnx').text("username");
+            }
+        }) 
+    </script>

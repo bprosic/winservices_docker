@@ -1,0 +1,9 @@
+# Ignore all handlebars files
+*.handlebars
+*.hbs
+
+# Or specific folders
+views/*.handlebars
+views/*.hbs
+views/**/*.hbs
+views/**/*.handlebars

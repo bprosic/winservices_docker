@@ -1,0 +1,73 @@
+<body>
+     <div class="d-flex" id="wrapper">
+         
+     {{>sidebar}}
+
+    <!-- Page Content -->
+        <div id="page-content-wrapper">
+        <h1></h1>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-9">
+                        <h4>How to install reporting tool on host mashine</h4>
+                        <p>1. Go to your host mashine.
+                        <br/>Find out what IP Address (only IPv4) is using your host mashine. Use:
+                            <blockquote>
+                            <b><small>ipconfig</small></b>
+                        </blockquote>
+                        </p>
+                        <p>2. Download a client program (<a href="files/winserv_client.zip">link</a>) and unzip it to host mashine.</p>
+                        <p>3. This program should be run on host mashine, example on Virtual Mashine where desired Windows services are located.
+                        <br />Run this program (WinServiceInfo.exe) as Administrator in order to work.</p>
+                        <p>4. This program is an editor actually. Everything that you write in this program is saved in config.cfg file (located in program root folder).
+                        <br/>If config.cfg file is missing, this program will create it. Dont worry about config.cfg file actually.<p>
+                        <p>In "List of services" tab section, click on <b>Edit</b> button below. </p>
+                        <br />Write down a windows service name that you want to monitor*. Example:
+                        <br />AxInstSV
+                        <br />ProfSvc</p>
+                        <p>*If you are not sure how to write a service name, then run 
+                            <br/>
+                            <blockquote>
+                            <b><small>services.msc</small></b>
+                            </blockquote>
+
+
+                        <br />choose a desired service -> right mouse click on it -> settings -> you will see first field <b>"Service name"</b>. 
+                        <br />This is your service name.</p>
+                        <p>5. Go to <b>"Misc"</b> tab.
+                        <br />For destination server IP, you have to write IP Address (IPv4 only) where this website is located.
+                        <br />Usually it is <b>192.168.161.128</b> and port is <b>50123</b></p>
+                        <p>6. Enable <b>"Run this program in background"</b> in order to run this client program in background.</p>
+                        <p>7. Click Save and wait a bit. You should see your services in table and its status.</p>
+                        <p>8. Exit a program.</p>
+                </div><!-- end of col-xs-9 -->
+
+                <div class="col-xs-9">
+                    <h4>How to see the results?</h4>
+                    <p>1. Here you have to configure that, on this website.</p>
+                    <p>2. If user is missing, add user first using menu on left site of website.
+                        <br/><small>Username and Email have to be unique in DB.</small>
+                        <br/><small>Use table to see which users are saved in DB.</small></p>
+                    <p>3. To add a host to the specific user, use <b>"Add host"</b> on left side.
+                    <br />For a specific user add a host IP (host IP is an IP Address where you installed client program)</p>
+                    <p>4. Go to status on left side and pick a newly created user.</p>
+                    <p>5. Every user can have it's own host IP Address and every user can have the same host IP. <br/>In other words, you can add hosts IP as much as you wish. </p>
+
+                </div>
+            </div><!-- end of col-xs-9 -->
+        </div><!-- end of row -->
+    </div>
+    
+    </div>
+      <!-- /container-fluid -->
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+{{>logout}}
+
+    <script type="application/javascript" nonce="{{nonce}}">
+        $('#helplnk').css({"background-color":"#f2f2f2"});
+    </script>
+
+    

@@ -1,0 +1,33 @@
+
+# Docker environment files
+.env.*
+.env
+!.env.example
+docker-compose.override.yml
+*.key
+*.pem
+
+public/files/
+node_modules/
+uploads/
+logs/
+*.log
+.DS_Store
+
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+.env.prod
+.env.root
+.env.node.dev
+.env.node.prod
+.node.dev.env
+.env.development
+
+*.zip

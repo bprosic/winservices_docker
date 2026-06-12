@@ -1,0 +1,103 @@
+<p>1. Open terminal on your host mashine.
+<br />To find out what MAC Address is used for network connection, use:
+<blockquote>
+  <b><small>ifconfig -a</small></b>
+</blockquote>
+<br />and write it somewhere beacuse you will need this MAC later.</p>
+
+<p>2. Download a client program and unzip it to some folder on host mashine.</p>
+<p><a class="client_lnk_download" href="/files/linux_client.zip"><i class="icon icon-download"></i>client linux</a></p>
+<p></p>
+<p>If linux_client.zip is downloaded in <b>/home/username*/Downloads</b>, then execute the following:</p>
+<p>* change username with valid Username, you can do this here (this is helper): 
+<input class="form-input" type="text" id="input-username-linux" placeholder="enter here username to change below in code">
+</p>
+
+
+<pre>
+<code></code>mkdir Linservice</code>
+</pre>
+
+<pre>
+<code>unzip /home/<div class="username-lnx">username</div>/Downloads/linux_client.zip -d /home/<div class="username-lnx">username</div>/Linservice</code>
+</pre>
+
+<pre>
+<code>rm /home/<div class="username-lnx">username</div>/Downloads/linux_client.zip</code>
+</pre>
+
+<pre>
+<code>chmod +x /home/<div class="username-lnx">username</div>/Linservice/*.sh</code>
+</pre>
+
+
+  
+<p>Then run next:</p>
+
+<pre>
+<code>./home/<div class="username-lnx">username</div>/Linservice/installserv.sh -init</code>
+</pre>
+
+
+<p>This will install software dependencies and it will create config.cfg file.</p>
+<p>Then you need to edit config.cfg file (use nano or vi editor) - usually only last two values you need to change.</p>
+<p>TO EDIT:</p><pre><code>nano /home/<div class="username-lnx">username</div>/Linservice/config.cfg</code></pre>
+
+<h5>Contents of config.cfg file</h5>
+<pre>
+<code># packages to install required for this script to run,default package is jq
+PACKAGES_TO_INSTALL="jq" <span class="label bg-secondary text-primary">Default</span>
+# IF FALSE, WRITE DNS; IF TRUE, WRITE IP
+SERVER_TO_SEND_DATA_USING_IP="false" <span class="label bg-secondary text-primary">Default</span>
+# CENTRAL SERVER TO SEND DATA TO
+SERVER_TO_SEND_DATA_TO="zollinfo.th-deg.de" <span class="label bg-secondary text-primary">Default</span>
+# CENTRAL SERVER PORT TO SEND DATA TO
+SERVER_TO_SEND_DATA_ON_PORT="50123" <span class="label bg-secondary text-primary">Default</span>
+# LOCAL COMPUTER PORT
+LOCAL_HOST_PORT="50121" <span class="label bg-error text-light">Enable in host firewall</span>
+# LOCAL COMPUTERS MAC ADDR DIVIDED BY :
+LOCAL_HOST_MAC="" <span class="label bg-error text-light">Write MAC Address gathered in 1st step.</span>
+# EXAMPLE service1;service2 FOR SERVICES YOU WANT TO MONITOR
+LOCAL_HOST_SERVICE_NAME="" <span class="label bg-error text-light">Write at least one service name to monitor e.g. xrdp</span></code>
+</pre>
+
+<h5>Example how config.cfg file should look</h5>
+<pre>
+<code>PACKAGES_TO_INSTALL="jq"
+SERVER_TO_SEND_DATA_USING_IP="false"
+SERVER_TO_SEND_DATA_TO="zollinfo.th-deg.de"
+SERVER_TO_SEND_DATA_ON_PORT="50123"
+LOCAL_HOST_PORT="50121"
+LOCAL_HOST_MAC="f0:de:f1:a1:6d:87"
+LOCAL_HOST_SERVICE_NAME="xrdp" <span class="label bg-dark text-light"> or "xrdp;ssh;service3;service4;serviceN;..."</span></code>
+</pre>
+
+
+<p>Save changes in config.cfg and exit editor.</p>
+<p>If everything is good configured, you can run one more time:</p>
+
+<pre>
+<code>./home/<div class="username-lnx">username</div>/Linservice/installserv.sh -init</code>
+</pre>
+
+<p></p>
+<p>There is log file - at the end of log file there should be statement "config.cfg file ok".</p>
+<pre>
+<code>cat /home/<div class="username-lnx">username</div>/Linservice/installserv.log</code>
+</pre>
+<p>Now run the last script:
+</p>
+<pre><code>./home/<div class="username-lnx">username</div>/Linservice/run.sh "./socketsrv.sh" "./installserv.sh -exec"</code></pre>
+
+<p>CLOSE TERMINAL - not with exit or with CTRL+C or CTRL+Z, just close terminal.</p>
+
+<p>If you restart your linux mashine - service will not work. You have to run last command one more time.</p>
+<p>This is still beta, I will add this as a linux service to run always in background.</p>
+
+
+<p>Utility used:</p>
+<p><span class="label bg-dark text-light">nc</span> - netcat is a computer networking utility for reading from and writing to network connections using TCP or UDP</p>
+<p><span class="label bg-dark text-light">jq</span> - a lightweight and flexible command-line JSON processor</p>
+
+<p></p>
+<p>Tested only on Linux Ubuntu 18, Linux Mint 19 Desktop environment and Jetson Nano Developer Kit.</p>

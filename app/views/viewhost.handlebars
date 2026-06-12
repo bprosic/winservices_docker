@@ -1,0 +1,168 @@
+<body>
+    <div class="container grid-lg">
+        <div class="hero hero-sm">
+            <h4 class="text-center">Showing last host information stored in DB</h4>
+        </div>
+        <div class="columns">
+            <form>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            </form>
+            {{#each result}}
+            
+            <div class="column col-6 col-xs-12">
+                <div class="card">
+                    {{#isStringLength files 0}}
+                    <img src="{{filePath}}{{files}}" class="img-doesnt-fit-by-spectre-view" alt="{{files}}">
+                    {{/isStringLength}}
+                    <div class="card-header">
+                        <div class="card-title h5">{{this.hostsName}} <span class="card-subtitle text-gray">//
+                                hostname</span></div>
+                        <div class="card-title h5">{{this.jsonReceivedFrom}} <span class="card-subtitle text-gray">//
+                                received from ip address</span></div>
+                        <div class="card-title h5">{{this.hostsIpAddr}} <span class="card-subtitle text-gray">//
+                                gathered ip address</span></div>
+                        <div class="card-title h5">{{formatDate this.createdAt}} <span
+                                class="card-subtitle text-gray">// last update</span></div>
+
+                    </div>
+                    <div class="card-body">
+
+                        <div class="columns">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>service name</th>
+                                        <th>status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="active">
+                                        <td>{{{divideString this.hostsServiceName}}}</td>
+                                        <td class="statusMessageTd">
+                                            {{#cond isActive '!==' 'n'}}
+                                            {{{divideString this.hostsServiceStatus}}}
+                                            {{/cond}}
+                                            {{#cond isActive '===' 'n'}}
+                                            no response from server
+                                            {{/cond}}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button ip="{{jsonReceivedFrom}}" port="{{portReceivedFrom}}" id="{{idPublic}}"
+                            class="btn btn-primary refresh-btn">refresh</button>
+                            <span class="text-dark statusToUser"></span>
+                    </div>
+                </div><!-- end card -->
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <ul id='messages'></ul>
+
+    <a class="adminBtnLnk" href="/add">
+        <div class="floatAdmin">
+            &#x3C;
+        </div>
+    </a>
+    <script type="application/javascript" src="/js/md5.js"></script>
+    <script type="application/javascript" src="/js/socket.io.js"></script>
+
+    <script type="application/javascript" nonce="{{nonce}}">
+        var windowLocation = window.location.href;
+        // if window location has a hashtag, delete it
+        windowLocation = windowLocation.replace('#', '');
+        //console.log(windowLocation);
+        // username
+        var usernameToView = windowLocation.substr(windowLocation.lastIndexOf('/') + 1, windowLocation.length);
+        //console.log(usernameToView);
+
+        var oldResultHash = MD5("{{toJSON result}}");
+        //console.log("{{toJSON result}}");
+
+        function htmlEntities(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        };
+
+
+        // 1. start task
+        var timerTask = setTimeout(function doCheck() {
+            $.ajax({
+                type: 'GET',
+                /*url: windowLocation,*/
+                url: '/view/checkdata/' + usernameToView,
+                success: function (data) {
+                    // take all values into md5 and check
+                    let newHash;
+                    if (data.length > 0) {
+                        newHash = MD5(htmlEntities(JSON.stringify(data)));
+                    }
+
+
+                    if (newHash !== undefined) {
+                        if (newHash != oldResultHash) {
+                            // refresh page as redirect page!
+                            window.location.href = windowLocation;
+                        }
+                    }
+
+                    //console.log(oldResultHash);
+                    //console.log(newHash);
+                },
+                error: function (jqXhr, textStatus, err) {
+                    BigNotifyMessage("Some error occured on this server, refresh page (F5)")
+                }
+            });
+            // 2. repeat task
+            timerTask = setTimeout(doCheck, 2000);
+        }, 2000);
+        
+        // 3. stop task
+        function stopCheck(timerName) {
+            clearTimeout(timerName);
+        }
+        function BigNotifyMessage(message) {
+            var thisDiv = $('#bigmessagediv');
+            if (thisDiv.length == 0) {
+                $('body').append("<div id='bigmessagediv'>" + message + "</div>");
+            } else {
+                thisDiv.text(message);
+            }
+
+        }
+
+        // action when click on refresh
+        $(".refresh-btn").on('click', function (e) {
+            // where C# is running and what port is open?
+            e.preventDefault();
+            $(this).attr("disabled", true);
+            var ipAddress = $(this).attr('ip');
+            const publicId = $(this).attr('id');
+            var statusToUserElement = $(this).next(".statusToUser");
+
+            statusToUserElement.text("Refreshing...");
+            
+
+            $.ajax({
+                type: 'GET',
+                url: '/view/requirerefresh/' + publicId,
+                success: function (data) {
+                    if (data === "sent") {
+                        console.log("refresh request sent...");
+                        statusToUserElement.text("Refresh request sent to " + ipAddress + ", waiting for client response...");
+                    } 
+                },
+                error: function (jqXhr, textStatus, err) {
+                    BigNotifyMessage("Some error occured in require refresh route, refresh page (F5)");
+                }
+            });
+        });
+
+
+    </script>

@@ -1,0 +1,201 @@
+<body>
+    <div class="d-flex" id="wrapper">
+
+        {{>sidebar}}
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <ul class="breadcrumb">
+                <i class="icon icon-location"></i>
+                <li class="breadcrumb-item">
+                    <a href="/addhost">Group manager</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a id="breadParent" href="#">Add host</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a id="breadChild" href="#">Edit host</a>
+                </li>
+            </ul>
+
+            <div class="container-fluid">
+                <h1></h1>
+
+                <form id="editForm" class="addForm" data-toggle="validator" role="form" method="POST" action="/edit/host/execedit">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <h4>Change client/host information:</h4>
+                        </div>
+                        <div class="col-xs-9">
+
+                            {{#each hostData}}
+                            <div class="form-group">
+                                <label for="inputHostIp">Client/Host MAC Address</label>
+                                <input type="text" class="form-control" id="inputMac" name="inputMac"
+                                    placeholder="MAC Addr" value="{{macHelper host_mac_addr}}" disabled>
+                                <div class="help-block with-errors"></div>
+                                <input type="text" class="form-control" id="currHostMac" name="currHostMac"
+                                    value="{{host_mac_addr}}" hidden>
+                                <input type="text" class="form-control" id="userName" name="userName" value=""
+                                    hidden>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="inputHostname">Host name</label>
+                                <input type="text" class="form-control" id="inputHostname" name="inputHostname"
+                                    placeholder="Hostname" value="{{hostName}}">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputHostdescription">Host description</label>
+                                <input type="text" class="form-control" id="inputHostdescription"
+                                    name="inputHostdescription" placeholder="Host description"
+                                    value="{{hostDescription}}">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            {{/each}}
+
+                        </div>
+                    </div>
+                </form>
+
+                <div class="addForm">
+                     <div class="row">
+                         <div class="col-xs-9">
+                {{#each hostData}}
+                {{#isStringLength files 0}}
+                <form action="/addhost/upload" enctype="multipart/form-data" method="POST" id="imageForm" hidden="true">
+                {{else}}
+                <form action="/addhost/upload" enctype="multipart/form-data" method="POST" id="imageForm">
+                {{/isStringLength}}
+                {{/each}}
+                    
+                        <div class="form-row" id="image">
+                            <div id="drop">
+                                <label for="hostImage">Image <small class="label">optional</small></label>
+                                <input type="file" name="someBild" class="form-control" accept="image/*" />
+                            </div>
+                            <div id="img-container">
+                            </div>
+                        </div>
+                </form>
+                    </div>
+                    </div>
+                    </div>
+
+                {{#each hostData}}
+                {{#isStringLength files 0}}
+                <div class="addForm">
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="filesContainerUploadedFile" id="uploadedImage">
+                            <img src="{{filePath}}{{files}}" class="img-doesnt-fit-by-spectre" alt="{{files}}">
+                            <div class="fileNameUploaded">{{files}}</div>
+                            <div class="mem">{{formatFileSize fileSize}}</div><a class="filesLinksUploadedFile"
+                                href="#"><span>x</span></a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                {{/isStringLength}}
+                {{/each}}
+                
+                <h1></h1>
+                
+                <form>
+                    <div class="row">
+                    <div class="col-xs-9">
+                        <button type="submit" id="btnSave" class="btn btn-primary">Save</button>
+                        <button type="reset" id="btnCancel" class="btn btn-default">Cancel</button>
+                    </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- /container-fluid -->
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+
+
+{{>logout}}
+
+    <script type="application/javascript" nonce="{{nonce}}">
+        $('#addhostlnk').css({"background-color":"#f2f2f2"});
+        $('#addhostform, #imageForm').trigger("reset");
+        var oldHost = "";
+        var userName = "";
+        var fileSize = "";
+        var isFileMarkedForDeletion = false;
+        var uploadedFileName = "";
+        var csrfToken = $("[name='_csrf']").val();
+        {{#each hostData}}
+            oldHost = "{{host_mac_addr}}";
+        {{/each}}
+
+        {{#each oldusr}}
+            userName = "{{user}}";
+        {{/each}}
+        var hostId = "{{hostId}}";
+        $('#userName').val(userName);
+        {{#if errors}}
+            {{#each errors}}
+                var divId = "{{this.param}}"; // inputHostname
+                var divOldValue = "{{this.value}}"
+                var divWhatIsMessage = "{{this.msg}}";
+                $('#' + divId).val(divOldValue);
+                $('#' + divId).next().text(divWhatIsMessage);
+            {{/each}}
+        {{/if}}
+
+        $('#btnCancel').on('click', function (e) {
+            e.preventDefault();
+            window.location.href = "/edit/byid/" + userName;
+        });
+        $('#btnSave').on('click', function (e) {
+            e.preventDefault();
+            if (isFileMarkedForDeletion) {
+                // delete a file from upload folder
+                var dataToSend = {
+                    user: userName,
+                    hostId: hostId,
+                    imageFile: uploadedFileName,
+                    _csrf: csrfToken
+                };
+                execAjax("/delete/file/host/image", "POST", dataToSend);
+            }
+            // the last is submit a form
+            $('#editForm').submit();
+        });
+        var getWindowLocation = window.location.pathname; // /edit/host/byid/bububulica/31
+        // I need /edit/byid/Cham
+        var arrPath = getWindowLocation.split("byid");
+        var parentLink = "/edit/byid/";
+        if (arrPath.length > 0) {
+            parentLink += arrPath[1].substr(1, arrPath[1].lastIndexOf('/'));
+        }
+        $('#breadChild').attr("href", getWindowLocation);
+        $('#breadParent').attr("href", parentLink);
+
+        $('a.filesLinksUploadedFile').on('click', function(e){
+            // mark uploaded file for deletion
+            isFileMarkedForDeletion = true;
+            uploadedFileName = $(this).parent().find(".fileNameUploaded").text();
+            $('.filesContainerUploadedFile').fadeOut().remove();
+            $('#imageForm').removeAttr("hidden");
+            $('#imageForm').trigger("reset");
+        });
+      
+
+    </script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/js/jquery.iframe-transport.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
+    <script src="/js/fileUploadFs.js"></script>
+    

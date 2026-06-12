@@ -1,0 +1,66 @@
+<body>
+    <div class="d-flex" id="wrapper">
+
+        {{>sidebar}}
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+                        <ul class="breadcrumb">
+                            <i class="icon icon-location"></i>
+                            <li class="breadcrumb-item">
+                                <a href="#">Help</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/help/web">Web</a>
+                            </li>
+                        </ul>
+                    </div><!-- end of col-xs-12 -->
+                </div><!-- end of col-xs-12 -->
+            </div><!-- end of row -->
+
+            <h1></h1>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-12">
+                        <h4>This is portal to show status of each host.</h4>
+                        <div id="linhelp" style="display: table;">
+                        <p>1. Add or edit current group name.</p>
+                        <p>If group is missing, add group name first using menu on left site of website.
+                            <br /><small> - group name and Email has to be unique.</small>
+                            <br /><small> - below is a list of existing groups/emails in DB.</small></p>
+                        <img src="/css/img/help/web1.png" alt="WinService Status website"
+                            class="img-thumbnail img-responsive">
+                        <br />
+                        <p>2. Then you need to add a host information (only MAC) for specific group <b>"Group
+                                manager"</b> on left side.*</p>
+                        <p></p>
+                        <img src="/css/img/help/web2.png" alt="WinService Status website"
+                            class="img-thumbnail img-responsive">
+                        <br />
+                        <p><br />3. Here you have to write down MAC Address of HOST you want to monitor.<small> (MAC
+                                Info is where you installed client program, see help -> client -> first step)</small>
+                        </p>
+                        <img src="/css/img/help/web3.png" alt="WinService Status website"
+                            class="img-thumbnail img-responsive">
+                        <br />
+                        <p>4. Go to status on left side and pick a newly created user to see the status.</p>
+                    </div>
+                    </div><!-- end of col-xs-9 -->
+                </div><!-- end of col-xs-12 -->
+            </div><!-- end of row -->
+
+
+        </div><!-- end of page-content-wrapper -->
+
+    </div><!-- end of d-flex -->
+
+
+    {{>logout}}
+
+    <script type="application/javascript" nonce="{{nonce}}">
+        $('#helplnk').next('.submenu').toggleClass('toggled');
+        $('#weblnk').css({ "background-color": "#f2f2f2" });
+    </script>

@@ -1,0 +1,22 @@
+{{#if expressFlash}}
+    <div class="warning-register-errors">
+        <span>{{expressFlash}}</span>
+    </div>
+{{/if}}
+
+
+{{#if loginError}}
+    <div class="warning-register-errors">
+        <div class="error">
+            <span>{{loginError}}</span>
+        </div>
+    </div>
+{{/if}}
+
+{{#if sessionFlash.message}}
+    <div class="warning-register-errors">
+        <div class="{{ sessionFlash.type }}">
+            <span>{{sessionFlash.message}}</span>
+        </div>
+    </div>
+{{/if}}
