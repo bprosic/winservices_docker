@@ -4,7 +4,10 @@ WORKDIR /app
 
 # Kopiraj package files
 COPY package*.json ./
-RUN npm install
+
+RUN npm cache clean --force && \
+    rm -rf node_modules && \
+    npm install
 
 # Kopiraj source code
 COPY . .

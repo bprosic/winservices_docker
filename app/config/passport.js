@@ -1,14 +1,14 @@
-const ExecuteQuery = require('./ExecuteQuery'),
-  dbQueries = require('./dbqry'),
-  bcrypt = require('bcrypt'),
-  LocalStrategy = require('passport-local').Strategy;
+const ExecuteQuery = require("./ExecuteQuery"),
+  dbQueries = require("./dbqry"),
+  bcrypt = require("bcryptjs"),
+  LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport) {
   passport.use(
     new LocalStrategy(
       {
-        usernameField: 'username',
-        passwordField: 'password',
+        usernameField: "username",
+        passwordField: "password",
       },
       (username, password, done) => {
         // Match user
@@ -18,7 +18,7 @@ module.exports = function (passport) {
             if (user.length > 0) {
               if (!user[0].id) {
                 return done(null, false, {
-                  message: 'Username not registered.',
+                  message: "Username not registered.",
                 });
               }
 
@@ -35,18 +35,18 @@ module.exports = function (passport) {
                   });
                 } else {
                   return done(null, false, {
-                    message: 'Wrong credentials!',
+                    message: "Wrong credentials!",
                   });
                 }
               });
             } else {
               return done(null, false, {
-                message: 'Wrong credentials!',
+                message: "Wrong credentials!",
               });
             }
           })
           .catch((errrors) => {
-            console.log('error in execQry1:');
+            console.log("error in execQry1:");
             console.log(errrors);
             return done(errrors);
           });

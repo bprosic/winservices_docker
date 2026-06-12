@@ -6,6 +6,13 @@ if (!process.env.NODE_UPLOAD_DIR) {
   process.exit(1);
 }
 
+const db = require("../config/dbcred-init"),
+  bcrypt = require("bcryptjs"),
+  fs = require("node:fs").promises,
+  path = require("path"),
+  uploadsDir = path.join(process.cwd(), process.env.NODE_UPLOAD_DIR),
+  logsDir = path.join(process.cwd(), process.env.NODE_LOG_DIR);
+
 async function query(q, params = []) {
   return db.query(q, params);
 }

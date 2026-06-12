@@ -52,7 +52,12 @@ if (!fs.existsSync(logDir) || !fs.existsSync(uploadsDir)) {
 
 log4js.configure({
   appenders: {
-    appLogs: { type: "file", filename: "app.log" },
+    appLogs: {
+      type: "file",
+      filename: path.join(`${logDir}`, "test.log"),
+      maxLogSize: 10485760,
+      backups: 3,
+    },
     consoleLogs: { type: "console" },
   },
   categories: {
