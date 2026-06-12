@@ -1,8 +1,10 @@
-require("dotenv").config();
+const { importConfig } = require("./config");
+importConfig();
+
 const compression = require("compression"),
   app = require("express")(),
   passport = require("passport"),
-  httpPort = process.env.PORT || 80, // this is actually websocket port
+  httpPort = process.env.NODE_PORT || 80, // this is actually websocket port
   // httpsPort = process.env.HTTPSPORT || 443, // https port
   http = require("node:http"),
   fs = require("node:fs"),
@@ -32,7 +34,21 @@ const compression = require("compression"),
   log4js = require("log4js"),
   json = require("body-parser"),
   Utils = require("handlebars"),
-  UPLOADS_DIR = require("./config/uploadDir");
+  UPLOADS_DIR = require("./config/uploadDir"),
+  logDir = process.env.NODE_LOG_DIR,
+  uploadsDir = process.env.NODE_UPLOAD_DIR;
+
+console.log("Checking logDir: ", logDir);
+console.log("Checking uploadsDir: ", uploadsDir);
+if (!fs.existsSync(logDir) || !fs.existsSync(uploadsDir)) {
+  // this will try to create a folder /test_logs_ext
+  // but I get permission denied.
+  // I get this error upon running docker in windows OS, but i think docker runs linux vm
+  // and then dockerfile
+
+  console.log("Run initdb.js First!!!");
+  process.exit(1);
+}
 
 log4js.configure({
   appenders: {
@@ -103,7 +119,7 @@ app.use(
     name: process.env.DB_NAME,
     cookie: {
       httpOnly: true,
-      secure: process.env.USING_SSL === "true" ? true : false,
+      secure: process.env.NODE_ENV === "production",
       path: "/",
       maxAge: 1 * DAY_IN_MILLIS, //24 hours
     },
