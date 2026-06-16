@@ -1,5 +1,5 @@
-const { importConfig } = require("./config");
-const isDevelopment = require("./config/isDevelopment");
+const { importConfig, isDevelopment, isRunningInDocker } = require("./config");
+
 importConfig();
 
 const compression = require("compression"),
@@ -49,6 +49,13 @@ if (!fs.existsSync(logDir) || !fs.existsSync(uploadsDir)) {
 
   console.log("Run initdb.js First!!!");
   process.exit(1);
+}
+
+// If using node.js like: Internet → HTTPS → nginx → HTTP → Node
+// then I need to set trust proxy:
+if (!isDevelopment && isRunningInDocker) {
+  console.log("Using trust proxy!");
+  app.set("trust proxy", 1);
 }
 
 log4js.configure({
@@ -156,9 +163,8 @@ app.use(
     cookie: {
       path: "/",
       maxAge: 1000 * 60 * 24 * 60, // 24hrs
-      secure: process.env.NODE_ENV === "production" ? "true" : "false", //process.env.USING_SSL // true when using ssl
+      secure: process.env.NODE_ENV === "production", //process.env.USING_SSL // true when using ssl
       httpOnly: true, // only use http protocol
-      sameSite: "lax", // strict, none, lax. Strict will not let you use thirdparty websites. Lax 50-50%
     },
   }),
 ); // store into cookie, not in session*/
