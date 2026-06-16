@@ -1,13 +1,22 @@
-docker exec -it winservices_docker node routes/createdb2.js
+First run:
+1. docker compose up -d --build
+then run:
+2. docker exec -it winservices_docker node routes/createdb2.js
 
-create folders:
+3. create folders:
 mkdir -p /var/data/winservices/logs
 mkdir -p /var/data/winservices/upload
 then important!!
 
-sudo chown -R 1000:1000 ./var/data/winservices
+4. sudo chown -R 1000:1000 ./var/data/winservices
+
+5. docker compose down -v
+6. docker compose up -d --build
 
 
-restart docker
-docker compose down -v
-docker compose up -d --build
+----------
+
+
+After app changes, run:
+1. git pull
+2. restart docker like this: docker compose up -d --build

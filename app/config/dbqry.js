@@ -80,9 +80,9 @@ const query = {
     "select h.uIdUser, h.idHost, h.host_mac_addr, h.hostIp, h.hostName, h.hostDescription, h.files from winservices.client as h " +
     "where h.uIdUser = ? and h.idHost = ?",
   qryHostTokenByHostId: `SELECT h.uIdUser, h.idHost, h.host_mac_addr, t.token FROM winservices.client AS h 
-  LEFT JOIN winservices.tbltokens AS T on h.idHost = t.idHost WHERE h.uIdUser = ? and h.idHost = ?`,
+  LEFT JOIN winservices.tbltokens AS t on h.idHost = t.idHost WHERE h.uIdUser = ? and h.idHost = ?`,
   qryHostTokenByToken: `SELECT h.uIdUser, h.idHost, h.host_mac_addr, t.token FROM winservices.client AS h 
-  LEFT JOIN winservices.tbltokens AS T on h.idHost = t.idHost WHERE t.token = ?`,
+  LEFT JOIN winservices.tbltokens AS t on h.idHost = t.idHost WHERE t.token = ?`,
   insertToken: `INSERT INTO winservices.tbltokens (idHost, token, createdAt) VALUES (?, ?, now()) `,
   qryUpdateHost:
     "UPDATE winservices.client SET hostName = ?, hostDescription = ?, updatedAt = now() where idHost = ? and uIdUser = ?",
