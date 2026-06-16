@@ -1,4 +1,5 @@
 const { importConfig } = require("./config");
+const isDevelopment = require("./config/isDevelopment");
 importConfig();
 
 const compression = require("compression"),
@@ -155,7 +156,7 @@ app.use(
     cookie: {
       path: "/",
       maxAge: 1000 * 60 * 24 * 60, // 24hrs
-      secure: process.env.USING_SSL === "true" ? true : false, //process.env.USING_SSL // true when using ssl
+      secure: process.env.NODE_ENV === "production" ? "true" : "false", //process.env.USING_SSL // true when using ssl
       httpOnly: true, // only use http protocol
       sameSite: "lax", // strict, none, lax. Strict will not let you use thirdparty websites. Lax 50-50%
     },
