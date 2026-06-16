@@ -8,6 +8,7 @@
     "start": "node app.js",
     "createdb": "node -r dotenv/config routes/createdb.js dotenv_config_path=./.env.root",
     "createcred": "node routes/createUsrTbl.js",
+    "init": "node routes/createdb2.js",
     "dev": "nodemon app.js --trace-deprecation",
     "start:prod": "node app.js"
   },

@@ -1,9 +1,9 @@
-const mysql = require("mysql2");
-const util = require("util");
-const { MINUTE_IN_MILLIS, SESSION_EXPIRY } = require("./expiration");
-const session = require("express-session");
-const { isRunningInDocker } = require("../config");
-const MySQLStore = require("express-mysql-session")(session),
+const mysql = require("mysql2"),
+  util = require("util"),
+  { MINUTE_IN_MILLIS, SESSION_EXPIRY } = require("./expiration"),
+  session = require("express-session"),
+  { isRunningInDocker } = require("../config"),
+  MySQLStore = require("express-mysql-session")(session),
   DB_HOST = isRunningInDocker ? process.env.DB_HOST : "localhost";
 
 const pool = mysql.createPool({

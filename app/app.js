@@ -5,7 +5,7 @@ importConfig();
 const compression = require("compression"),
   app = require("express")(),
   passport = require("passport"),
-  httpPort = process.env.NODE_PORT || 80, // this is actually websocket port
+  httpPort = process.env.NODE_PORT || 3000, // this is actually websocket port
   // httpsPort = process.env.HTTPSPORT || 443, // https port
   http = require("node:http"),
   fs = require("node:fs"),
@@ -47,7 +47,7 @@ if (!fs.existsSync(logDir) || !fs.existsSync(uploadsDir)) {
   // I get this error upon running docker in windows OS, but i think docker runs linux vm
   // and then dockerfile
 
-  console.log("Run initdb.js First!!!");
+  console.log("Run npm run init First!!!");
   process.exit(1);
 }
 

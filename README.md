@@ -20,3 +20,10 @@ then important!!
 After app changes, run:
 1. git pull
 2. restart docker like this: docker compose up -d --build
+
+
+
+----
+Testing websocket in server itself:
+1. wscat -c ws://127.0.0.1:3000
+2. wscat -c wss://in.th-deg.de

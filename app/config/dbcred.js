@@ -1,10 +1,11 @@
-const mysql = require("mysql2");
-const util = require("util");
-const { MINUTE_IN_MILLIS, SESSION_EXPIRY } = require("./expiration");
-const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
+const mysql = require("mysql2"),
+  util = require("util"),
+  { MINUTE_IN_MILLIS, SESSION_EXPIRY } = require("./expiration"),
+  session = require("express-session"),
+  MySQLStore = require("express-mysql-session")(session),
+  { isDevelopment } = require("../config");
 
-const pool = mysql.createPool({
+const whenDevelopment = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -13,7 +14,9 @@ const pool = mysql.createPool({
   connectionLimit: 20,
   queueLimit: 0,
   debug: false,
-});
+};
+
+const pool = mysql.createPool({ ...whenDevelopment, port: 3306 });
 
 if (!pool) {
   console.error("Database pool is not initialized");

@@ -15,7 +15,7 @@ const clearCache = (token) => {
   } catch (error) {}
 };
 
-function setupWebSocketServer(server, httpsPort, mysocket) {
+function setupWebSocketServer(server, httpPort, mysocket) {
   const ws = new WebSocket.Server({ server }); // you cannot write here httpServer or blabla. Just server,port,noServer
 
   ws.on("connection", (ws, req) => {
@@ -67,7 +67,7 @@ function setupWebSocketServer(server, httpsPort, mysocket) {
   ws.on("listening", function () {
     var address = ws.address();
     log.info("Socket server listening on port " + address.port);
-    log.info("Https server listening on port " + httpsPort);
+    log.info("Http server listening on port " + httpPort);
   });
 
   return ws;
